@@ -3,23 +3,7 @@
 // @version        1.0.2
 // @description    Кликер ордеров
 // @author         Maslak Nikolai
-// @include        https://cotps.com/*
-// @grant          GM.xmlHttpRequest
-// @grant          GM_xmlhttpRequest
-// @grant          GM_download
-// @grant          GM_info
-// @grant          GM_setValue
-// @grant          GM_getValue
-// @grant          GM_deleteValue
-// @grant          GM_listValues
-// @grant          GM_addValueChangeListener
-// @grant          GM_notification
-// @grant          GM.setValue
-// @grant          GM.getValue
-// @grant          GM.deleteValue
-// @grant          GM.listValues
-// @grant          unsafeWindow
-// @grant          GM.addValueChangeListener
+// @match          https://cotps.com/*
 // @run-at         document-end
 // @allFrames      true
 // ==/UserScript==
@@ -29,49 +13,45 @@ async function start() {
         return
     }
 
-    await sleep(3000)
+    console.log("[COTPS_CLICKER] Жду когда будет виден баланс.");
 
-    const balanceLabel = [...document.querySelectorAll('.division-desc')].find(el => el.innerText === 'Wallet balance')
-
-    if (!balanceLabel) {
-        console.error('Не вижу баланс');
-        await sleep(10 * 1000)
-        location.reload()
-        return
-    }
-
-    const balance = Number(balanceLabel.nextElementSibling.innerText)
+    const balance = await whenBalanceExists();
 
     if (balance < 5) {
-        console.error('Баланс меньше 5. Проверка через 5 минут.');
-        await sleep(5 * 60 * 1000)
-        location.reload()
-        return
+        console.error('[COTPS_CLICKER] Баланс меньше 5. Перегрузка через 5 минут.');
+        await sleep(5 * 60 * 1000);
+        location.reload();
+        return;
     }
 
-    await makeOrder()
-    await sleep(10 * 1000)
+    console.log("[COTPS_CLICKER] Баланс в норме.");
 
-    location.reload()
-}
-
-start()
-
-async function makeOrder() {
-    const searchOrderButton = document.querySelector('.orderBtn')
-    if (!searchOrderButton) {
-        console.error('No order button');
-        return
-    }
+    const searchOrderButton = document.querySelector('.orderBtn');
 
     searchOrderButton.click();
 
-    const sellButton = await whenSellButtonExists()
+    console.log("[COTPS_CLICKER] Жду открытия окна.");
 
-    await sleep(2000)
+    const sellButton = await whenSellButtonExists();
 
-    sellButton.click()
+    console.log("[COTPS_CLICKER] Окно открыто.");
+
+    await sleep(2000);
+
+    console.log('[COTPS_CLICKER] Жму кнопку "Sell".');
+
+    sellButton.click();
+
+    console.log('[COTPS_CLICKER] Перезагрузка через 10 секунд.');
+
+    await sleep(10 * 1000);
+
+    console.log('[COTPS_CLICKER] Перезагрузка.');
+
+    location.reload();
 }
+
+start();
 
 async function whenSellButtonExists() {
     return new Promise((resolve) => {
@@ -83,6 +63,28 @@ async function whenSellButtonExists() {
                 resolve(sellButton)
                 clearInterval(interval)
             }
+        }, 1000)
+    })
+}
+
+async function whenBalanceExists() {
+    return new Promise((resolve) => {
+        const interval = setInterval(() => {
+            const allDescriptions = [...document.querySelectorAll('.division-desc')]
+            const balanceLabel = allDescriptions.find(el => el.innerText === 'Wallet balance')
+
+            if (!balanceLabel) {
+                return
+            }
+
+            const balanceValue = Number(balanceLabel.nextElementSibling?.innerText || 0)
+
+            if (!balanceValue) {
+                return
+            }
+
+            clearInterval(interval)
+            resolve(balanceValue)
         }, 1000)
     })
 }
