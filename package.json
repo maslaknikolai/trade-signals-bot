@@ -1,0 +1,36 @@
+{
+  "name": "cotps-clicker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "debug": "npm run build && npm run watch-debug",
+    "serve": "node dist/index.js",
+    "start": "npm run serve",
+    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\"",
+    "watch-node": "nodemon dist/index.js",
+    "watch-ts": "tsc -w",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maslaknikolai/cotps-clicker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maslaknikolai/cotps-clicker/issues"
+  },
+  "homepage": "https://github.com/maslaknikolai/cotps-clicker#readme",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1"
+  },
+  "devDependencies": {
+    "concurrently": "^7.1.0",
+    "nodemon": "^2.0.16",
+    "ts-node": "^10.7.0"
+  }
+}
