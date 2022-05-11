@@ -3,8 +3,9 @@ import processAccount from './processAccount';
 import credentialsItems from './credentialsItems';
 import keepHerokuAwaiken from './keepHerokuAwaiken';
 
+keepHerokuAwaiken()
+
 function main() {
-    keepHerokuAwaiken()
     credentialsItems.forEach(processAccount)
 }
 
