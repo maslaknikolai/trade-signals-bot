@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           cotps.com order clicker
-// @version        1.0.2
+// @version        1.0.3
 // @description    Кликер ордеров
 // @author         Maslak Nikolai
 // @match          https://cotps.com/*
