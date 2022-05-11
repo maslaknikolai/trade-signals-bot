@@ -10,21 +10,21 @@ export default async function processAccount(credentialsItem: ICredentialsItem) 
     try {
         const token = await getToken(credentialsItem);
 
-        logToBot(`Авторизован ${credentialsItem.phone}`)
+        logToBot(`[${credentialsItem.phone}] Авторизован`)
 
         let balance = await getBalance(token)
 
-        logToBot(`Баланс ${balance}`)
+        logToBot(`[${credentialsItem.phone}] Баланс: ${balance}`)
 
         await sleep(5000)
 
         while (balance > 5) {
             const orderId = await getOrderId(token)
-            logToBot(`Ордер создан ${orderId}`)
+            logToBot(`[${credentialsItem.phone}] Ордер создан ${orderId}`)
             await sleep(5000)
             sell(token, orderId)
             balance = await getBalance(token)
-            logToBot(`Продажа прошла ${orderId}.`)
+            logToBot(`[${credentialsItem.phone}] Продажа прошла ${orderId}`)
         }
     } catch(e) {
         console.error(e);
