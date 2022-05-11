@@ -8,7 +8,7 @@ import getBalance from "./getBalance";
 export default async function processAccount(credentialsItem: ICredentialsItem) {
     try {
         const token = await getToken(credentialsItem);
-        const balance = await getBalance(token)
+        let balance = await getBalance(token)
 
         await sleep(5000)
 
@@ -16,6 +16,7 @@ export default async function processAccount(credentialsItem: ICredentialsItem) 
             const orderId = await getOrderId(token)
             await sleep(5000)
             sell(token, orderId)
+            balance = await getBalance(token)
         }
     } catch(e) {
         console.error(e);
