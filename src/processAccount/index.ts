@@ -12,14 +12,15 @@ export default async function processAccount(credentialsItem: ICredentialsItem) 
 
         logToBot(`[${credentialsItem.phone}] Авторизован`)
 
-        const userData = await getUserData(token)
-        let balance = userData.balance
+        const { balance, dealMinBalance } = await getUserData(token)
+
 
         logToBot(`[${credentialsItem.phone}] Баланс: ${balance}`)
 
         await sleep(5000)
 
-        while (balance > 5) {
+        let mutableBalance = balance
+        while (mutableBalance > dealMinBalance) {
             const orderId = await getOrderId(token)
             logToBot(`[${credentialsItem.phone}] Ордер создан`)
 
@@ -27,10 +28,9 @@ export default async function processAccount(credentialsItem: ICredentialsItem) 
             await sell(token, orderId)
             await sleep(3000)
 
-            const userData = await getUserData(token)
-            const totalBalance = userData.totalBalance
+            const { totalBalance, balance } = await getUserData(token)
 
-            balance = userData.balance
+            mutableBalance = balance
 
             logToBot(`[${credentialsItem.phone}] Продажа прошла`)
             logToBot(`[${credentialsItem.phone}] Баланс: ${balance}. Общий баланс: ${totalBalance}`)
