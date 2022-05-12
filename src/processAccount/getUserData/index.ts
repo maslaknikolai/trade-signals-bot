@@ -46,6 +46,6 @@ export default async function getBalance(token: string) {
 
     return {
         balance: Number(responseData.userinfo.balance),
-        profit: responseData.deal.profit
+        totalBalance: responseData.userinfo.total_balance
     };
 }

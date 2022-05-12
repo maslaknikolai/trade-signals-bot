@@ -28,12 +28,12 @@ export default async function processAccount(credentialsItem: ICredentialsItem) 
             await sleep(3000)
 
             const userData = await getUserData(token)
-            const profit = userData.profit
+            const totalBalance = userData.totalBalance
 
             balance = userData.balance
 
             logToBot(`[${credentialsItem.phone}] Продажа прошла`)
-            logToBot(`[${credentialsItem.phone}] Баланс: ${balance}. Общая прибыль: ${profit}`)
+            logToBot(`[${credentialsItem.phone}] Баланс: ${balance}. Общий баланс: ${totalBalance}`)
     }
     } catch(e) {
         console.error(e);
