@@ -3,7 +3,7 @@ import ICredentialsItem from "../types/ICredentialsItem";
 import getOrderId from "./getOrderId";
 import getToken from "./getToken";
 import sell from "./sell";
-import getBalance from "./getBalance";
+import getUserData from "./getUserData";
 import logToBot from "../logToBot";
 
 export default async function processAccount(credentialsItem: ICredentialsItem) {
@@ -12,7 +12,8 @@ export default async function processAccount(credentialsItem: ICredentialsItem) 
 
         logToBot(`[${credentialsItem.phone}] Авторизован`)
 
-        let balance = await getBalance(token)
+        const userData = await getUserData(token)
+        let balance = userData.balance
 
         logToBot(`[${credentialsItem.phone}] Баланс: ${balance}`)
 
@@ -20,13 +21,20 @@ export default async function processAccount(credentialsItem: ICredentialsItem) 
 
         while (balance > 5) {
             const orderId = await getOrderId(token)
-            logToBot(`[${credentialsItem.phone}] Ордер создан ${orderId}`)
+            logToBot(`[${credentialsItem.phone}] Ордер создан`)
+
             await sleep(5000)
             await sell(token, orderId)
             await sleep(3000)
-            balance = await getBalance(token)
-            logToBot(`[${credentialsItem.phone}] Продажа прошла ${orderId}. Баланс: ${balance}`)
-        }
+
+            const userData = await getUserData(token)
+            const profit = userData.profit
+
+            balance = userData.balance
+
+            logToBot(`[${credentialsItem.phone}] Продажа прошла`)
+            logToBot(`[${credentialsItem.phone}] Баланс: ${balance}. Общая прибыль: ${profit}`)
+    }
     } catch(e) {
         console.error(e);
     }

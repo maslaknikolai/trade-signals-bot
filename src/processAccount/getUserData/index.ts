@@ -3,19 +3,19 @@ import axios from "axios";
 interface IResponse {
     "success": true,
     "userinfo": {
-        "total_balance": "200",
-        "freeze_balance": "89.000",
-        "balance": "110.591",
-        "min_times": 2,
-        "max_times": 5,
-        "submit_min_times": 2,
-        "submit_max_times": 5,
-        "deal_min_balance": 5
+        "total_balance": string
+        "freeze_balance": string
+        "balance": string
+        "min_times": number,
+        "max_times": number,
+        "submit_min_times": number,
+        "submit_max_times": number,
+        "deal_min_balance": number
     },
     "deal": {
-        "count": 8,
-        "profit": "0.858",
-        "price": "286.000"
+        "count": number,
+        "profit": number,
+        "price": number
     }
 }
 
@@ -44,5 +44,8 @@ export default async function getBalance(token: string) {
 
     const responseData = response.data as IResponse
 
-    return Number(responseData.userinfo.balance);
+    return {
+        balance: Number(responseData.userinfo.balance),
+        profit: responseData.deal.profit
+    };
 }
