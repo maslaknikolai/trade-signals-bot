@@ -15,18 +15,13 @@ export default async function processAccount(credentialItem: ICredentialItem) {
     try {
         const token = await getToken(credentialItem);
 
-        logToBot(credentialItem.telegramChatId, `Авторизован`)
-
         const { balance, dealMinBalance } = await getUserData(token)
-
-        logToBot(credentialItem.telegramChatId, `Баланс: ${balance}`)
 
         await sleep(5000)
 
         let mutableBalance = balance
         while (mutableBalance > dealMinBalance) {
             const orderId = await getOrderId(token)
-            logToBot(credentialItem.telegramChatId, `Ордер создан`)
 
             await sleep(5000)
             await sell(token, orderId)
@@ -36,8 +31,7 @@ export default async function processAccount(credentialItem: ICredentialItem) {
 
             mutableBalance = balance
 
-            logToBot(credentialItem.telegramChatId, `Продажа прошла`)
-            logToBot(credentialItem.telegramChatId, `Баланс: ${balance}. Общий баланс: ${totalBalance}`)
+            logToBot(credentialItem.telegramChatId, `Продажа прошла.\nБаланс: ${balance}\nОбщий баланс: ${totalBalance}`)
     }
     } catch(e) {
         logToBot(TELEGRAM_OWNER_CHAT_ID, `Произошла ошибка:\n${JSON.stringify(e, null, 4)}`)
