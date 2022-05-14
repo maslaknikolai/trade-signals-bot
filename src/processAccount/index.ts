@@ -36,6 +36,7 @@ export default async function processAccount(credentialsItem: ICredentialsItem) 
             logToBot(`[${credentialsItem.phone}] Баланс: ${balance}. Общий баланс: ${totalBalance}`)
     }
     } catch(e) {
+        logToBot(`[${credentialsItem.phone}] Произошла ошибка:\n${JSON.stringify(e), null, 4}`)
         console.error(e);
     }
 }
