@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           cotps.com order clicker
 // @version        1.0.3
-// @description    Кликер ордеров
+// @description    cotps.com autoordering
 // @author         Maslak Nikolai
 // @match          https://cotps.com/*
 // @run-at         document-end
@@ -13,40 +13,38 @@ async function start() {
         return
     }
 
-    console.log("[COTPS_CLICKER] Жду когда будет виден баланс.");
+    console.log("[COTPS_CLICKER] Can't see the balance.");
 
     const balance = await whenBalanceExists();
 
     if (balance < 5) {
-        console.error('[COTPS_CLICKER] Баланс меньше 5. Перегрузка через 5 минут.');
+        console.error('[COTPS_CLICKER] Balance is lower than 5. Page is going to be reloaded in 5 minutes.');
         await sleep(5 * 60 * 1000);
         location.reload();
         return;
     }
 
-    console.log("[COTPS_CLICKER] Баланс в норме.");
-
     const searchOrderButton = document.querySelector('.orderBtn');
 
     searchOrderButton.click();
 
-    console.log("[COTPS_CLICKER] Жду открытия окна.");
+    console.log("[COTPS_CLICKER] Opening modal...");
 
     const sellButton = await whenSellButtonExists();
 
-    console.log("[COTPS_CLICKER] Окно открыто.");
+    console.log("[COTPS_CLICKER] Modal is opened.");
 
     await sleep(2000);
 
-    console.log('[COTPS_CLICKER] Жму кнопку "Sell".');
+    console.log('[COTPS_CLICKER] Clicking "Sell" button.');
 
     sellButton.click();
 
-    console.log('[COTPS_CLICKER] Перезагрузка через 10 секунд.');
+    console.log('[COTPS_CLICKER] Reloading in 10 seconds...');
 
     await sleep(10 * 1000);
 
-    console.log('[COTPS_CLICKER] Перезагрузка.');
+    console.log('[COTPS_CLICKER] Reloading.');
 
     location.reload();
 }

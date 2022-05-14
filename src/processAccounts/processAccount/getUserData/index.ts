@@ -45,6 +45,7 @@ export default async function getUserData(token: string) {
 
 
     const responseData = response.data as IResponse
+
     return {
         balance: Number(responseData.userinfo.balance),
         totalBalance: responseData.userinfo.total_balance,

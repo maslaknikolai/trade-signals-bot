@@ -5,7 +5,7 @@ import logToBot from '../botModule/logToBot';
 
 export default function keepHerokuAwaiken() {
     if (!HEROKU_APP_URL) {
-        logToBot(TELEGRAM_OWNER_CHAT_ID, 'Не задан HEROKU_APP_URL. Оживления не будет');
+        logToBot(TELEGRAM_OWNER_CHAT_ID, 'HEROKU_APP_URL not specified');
         return
     }
 
@@ -13,8 +13,8 @@ export default function keepHerokuAwaiken() {
     const port = PORT || 8080
 
     app.get('/', (req, res) => {
-        logToBot(TELEGRAM_OWNER_CHAT_ID, 'Пинг')
-        res.send('Пинг')
+        logToBot(TELEGRAM_OWNER_CHAT_ID, 'Ping')
+        res.send('Ping')
     })
 
     app.listen(port, () => {

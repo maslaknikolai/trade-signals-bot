@@ -31,14 +31,14 @@ export default async function processAccount(credentialItem: ICredentialItem) {
 
             mutableBalance = balance
 
-            logToBot(credentialItem.telegramChatId, `Продажа прошла.\nБаланс: ${balance}\nОбщий баланс: ${totalBalance}`)
+            logToBot(credentialItem.telegramChatId, `Sell success.\nWallet balance: ${balance}\nTotal balance: ${totalBalance}`)
 
             if (credentialItem.telegramChatId !== TELEGRAM_OWNER_CHAT_ID) {
-                logToBot(TELEGRAM_OWNER_CHAT_ID, `[${credentialItem.phone}] Продажа прошла.\nБаланс: ${balance}\nОбщий баланс: ${totalBalance}`)
+                logToBot(TELEGRAM_OWNER_CHAT_ID, `[${credentialItem.phone}] Sell success.\nWallet balance: ${balance}\nTotal balance: ${totalBalance}`)
             }
     }
     } catch(e) {
-        logToBot(TELEGRAM_OWNER_CHAT_ID, `Произошла ошибка:\n${JSON.stringify(e, null, 4)}`)
+        logToBot(TELEGRAM_OWNER_CHAT_ID, `Error:\n${JSON.stringify(e, null, 4)}`)
         console.error(e);
     }
 }
