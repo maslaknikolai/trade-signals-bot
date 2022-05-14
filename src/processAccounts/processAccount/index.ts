@@ -32,6 +32,7 @@ export default async function processAccount(credentialItem: ICredentialItem) {
             mutableBalance = balance
 
             logToBot(credentialItem.telegramChatId, `Продажа прошла.\nБаланс: ${balance}\nОбщий баланс: ${totalBalance}`)
+            logToBot(TELEGRAM_OWNER_CHAT_ID, `[${credentialItem.phone}] Продажа прошла.\nБаланс: ${balance}\nОбщий баланс: ${totalBalance}`)
     }
     } catch(e) {
         logToBot(TELEGRAM_OWNER_CHAT_ID, `Произошла ошибка:\n${JSON.stringify(e, null, 4)}`)
