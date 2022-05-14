@@ -19,7 +19,7 @@ interface IResponse {
     }
 }
 
-export default async function getBalance(token: string) {
+export default async function getUserData(token: string) {
     const response = await axios({
         url: "https://www.cotps.com:8443/api/mine/user/getDealInfo",
         method: "GET",
@@ -28,6 +28,7 @@ export default async function getBalance(token: string) {
             "Accept-Encoding": "gzip, deflate, br",
             "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
             "Connection": "keep-alive",
+            "If-None-Match": 'W/"f5-YXhUCAIYwuw34enb6RLABXNXBBA"',
             "Host": "www.cotps.com:8443",
             "Origin": "https://cotps.com",
             "Referer": "https://cotps.com/",
@@ -42,8 +43,8 @@ export default async function getBalance(token: string) {
         }
     })
 
-    const responseData = response.data as IResponse
 
+    const responseData = response.data as IResponse
     return {
         balance: Number(responseData.userinfo.balance),
         totalBalance: responseData.userinfo.total_balance,

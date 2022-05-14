@@ -1,13 +1,13 @@
 import 'dotenv/config';
-import processAccount from './processAccount';
-import credentialsItems from './credentialsItems';
 import keepHerokuAwaiken from './keepHerokuAwaiken';
+import connect from './db'
+import processAccounts from './processAccounts';
 
-keepHerokuAwaiken()
-
-function main() {
-    credentialsItems.forEach(processAccount)
+async function main() {
+    await connect()
+    keepHerokuAwaiken()
+    processAccounts()
 }
 
 main()
-setInterval(main, 5 * 60 * 1000)
+

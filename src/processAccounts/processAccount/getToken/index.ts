@@ -1,7 +1,7 @@
-import ICredentialsItem from "../../types/ICredentialsItem";
 import axios from "axios";
+import { ICredentialItem } from "../../../credentialsModule/CredentialItem.model";
 
-export default async function getToken(credentialsItem: ICredentialsItem) {
+export default async function getToken(credentialItem: ICredentialItem) {
     const response = await axios({
         url: "https://www.cotps.com:8443/api/mine/sso/user_login_check",
         method: "POST",
@@ -23,8 +23,8 @@ export default async function getToken(credentialsItem: ICredentialsItem) {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36",
         },
         data: {
-            "mobile": credentialsItem.phone,
-            "password": credentialsItem.password,
+            "mobile": credentialItem.phone,
+            "password": credentialItem.password,
             "type": "mobile"
         }
     })

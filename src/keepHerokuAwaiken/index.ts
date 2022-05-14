@@ -1,18 +1,21 @@
 import axios from "axios";
 import express from 'express';
-import logToBot from '../logToBot';
+import { HEROKU_APP_URL, PORT, TELEGRAM_OWNER_CHAT_ID } from "../config";
+import logToBot from '../botModule/logToBot';
+
+const ownerChatId = TELEGRAM_OWNER_CHAT_ID
 
 export default function keepHerokuAwaiken() {
-    if (!process.env.HEROKU_APP_URL) {
-        logToBot('Не задан HEROKU_APP_URL. Оживления не будет');
+    if (!HEROKU_APP_URL) {
+        logToBot(ownerChatId, 'Не задан HEROKU_APP_URL. Оживления не будет');
         return
     }
 
     const app = express()
-    const port = process.env.PORT || 8080
+    const port = PORT || 8080
 
     app.get('/', (req, res) => {
-        logToBot('Пинг')
+        logToBot(ownerChatId, 'Пинг')
         res.send('Пинг')
     })
 
@@ -25,5 +28,5 @@ export default function keepHerokuAwaiken() {
 }
 
 function ping() {
-    axios.get(process.env.HEROKU_APP_URL)
+    axios.get(HEROKU_APP_URL)
 }
