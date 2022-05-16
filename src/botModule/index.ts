@@ -22,7 +22,7 @@ bot.command('disable', async (ctx) => {
         return
     }
 
-    setIsCredentialEnabled(credential.id, false)
+    await setIsCredentialEnabled(credential._id, false)
 
     ctx.reply('Disabled')
 })
@@ -36,7 +36,7 @@ bot.command('enable', async (ctx) => {
         return
     }
 
-    setIsCredentialEnabled(credential.id, true)
+    await setIsCredentialEnabled(credential._id, true)
 
     ctx.reply('Enabled')
 })
