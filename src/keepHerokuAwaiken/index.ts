@@ -1,11 +1,11 @@
 import axios from "axios";
 import express from 'express';
-import { HEROKU_APP_URL, PORT, TELEGRAM_OWNER_CHAT_ID } from "../config";
+import { POLLING_URL, PORT, TELEGRAM_OWNER_CHAT_ID } from "../config";
 import logToBot from '../botModule/logToBot';
 
 export default function keepHerokuAwaiken() {
-    if (!HEROKU_APP_URL) {
-        logToBot(TELEGRAM_OWNER_CHAT_ID, 'HEROKU_APP_URL not specified');
+    if (!POLLING_URL) {
+        logToBot(TELEGRAM_OWNER_CHAT_ID, 'POLLING_URL not specified');
         return
     }
 
@@ -26,5 +26,5 @@ export default function keepHerokuAwaiken() {
 }
 
 function ping() {
-    axios.get(HEROKU_APP_URL)
+    // axios.get(POLLING_URL)
 }

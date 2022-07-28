@@ -1,5 +1,5 @@
 {
-  "name": "cotps-clicker",
+  "name": "trade-signals-bot",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -16,15 +16,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/maslaknikolai/cotps-clicker.git"
+    "url": "git+https://github.com/maslaknikolai/trade-signals-bot.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/maslaknikolai/cotps-clicker/issues"
+    "url": "https://github.com/maslaknikolai/trade-signals-bot/issues"
   },
-  "homepage": "https://github.com/maslaknikolai/cotps-clicker#readme",
+  "homepage": "https://github.com/maslaknikolai/trade-signals-bot#readme",
   "dependencies": {
     "axios": "^0.27.2",
     "dotenv": "^16.0.1",

