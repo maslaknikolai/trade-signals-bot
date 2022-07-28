@@ -26,5 +26,5 @@ export default function keepHerokuAwaiken() {
 }
 
 function ping() {
-    // axios.get(POLLING_URL)
+    axios.get(POLLING_URL)
 }
