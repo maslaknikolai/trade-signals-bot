@@ -8,11 +8,11 @@
     "debug": "npm run build && npm run watch-debug",
     "serve": "node dist/index.js",
     "start": "npm run serve",
-    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\"",
+    "watch-debug": "concurrently \"npm run watch-ts\" \"npm run serve-debug\"",
     "watch-node": "nodemon dist/index.js",
     "watch-ts": "tsc -w",
-    "tst": "tsc test.ts && node test.js",
-    "watch": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\""
+    "tst": "ts-node moduleChecker/index.ts",
+    "watch": "concurrently \"npm run watch-ts\" \"npm run watch-node\""
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
   "homepage": "https://github.com/maslaknikolai/trade-signals-bot#readme",
   "dependencies": {
     "axios": "^0.27.2",
+    "bybit-api": "^2.3.0",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "mongoose": "^6.3.3",
@@ -36,6 +37,6 @@
     "@types/express": "^4.17.13",
     "concurrently": "^7.1.0",
     "nodemon": "^2.0.16",
-    "ts-node": "^10.7.0"
+    "ts-node": "^10.9.1"
   }
 }

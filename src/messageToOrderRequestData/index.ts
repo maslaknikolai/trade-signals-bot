@@ -23,13 +23,26 @@ function parseManual(message: string): IOrderRequest {
 
     return {
         coin,
-        direction,
+        isBuy: direction === 'long',
         stopLoss,
         takeProfit
     }
 }
 
-function parseMessageFromRusina(message: string) {
+/* Example:
+"#KLAY/USDT #LONG
+
+Монета пробила хорошо наторгованный уровень сопротивления 0.265$.
+Я ожидаю продолжение роста (тем более Биток летит).
+
+Можно входить сейчас, можно по факту закрытия свечи выше уровня - тут каждый сам решает уже (я по текущим зашла) 👌🏽
+
+Тейк - профиты на графике ✅
+
+Стоп - лосс: 0.259$ ❌"
+*/
+
+function parseMessageFromRusina(message: string): IOrderRequest {
     const splitted = message.split('\n')
 
     const coin = splitted[0].split(' ')[0].substring(1).replace('/USDT', '')
@@ -38,7 +51,7 @@ function parseMessageFromRusina(message: string) {
 
     return {
         coin,
-        direction,
+        isBuy: direction === 'long',
         stopLoss
     }
 }
