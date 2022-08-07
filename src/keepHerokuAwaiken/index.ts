@@ -13,7 +13,6 @@ export default function keepHerokuAwaiken() {
     const port = PORT || 8080
 
     app.get('/', (req, res) => {
-        logToBot(TELEGRAM_OWNER_CHAT_ID, 'Ping')
         res.send('Ping')
     })
 
