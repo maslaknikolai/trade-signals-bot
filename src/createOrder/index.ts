@@ -1,6 +1,6 @@
 import IOrderRequestData from "IOrderRequestData";
 import { LinearClient } from 'bybit-api';
-import memory from "src/memory";
+import memory from "../memory";
 
 function getMark(value: number | string, orderSum: number) {
   if (typeof value === 'number' || !Number.isNaN(Number(value))) {
@@ -29,7 +29,7 @@ export default async function createOrder(orderRequestData: IOrderRequestData) {
     const stopLoss = getMark(orderRequestData.stopLoss, lastPrice)
     const qty = Number((lastPrice / realOrderSum).toFixed(3))
 
-    const params = {
+    const orderParams = {
       symbol,
       qty,
       side: orderRequestData.isBuy ? 'Buy' : 'Sell',
@@ -42,7 +42,7 @@ export default async function createOrder(orderRequestData: IOrderRequestData) {
       stop_loss: stopLoss,
     }
 
-    const placeOrderResult = await client.placeActiveOrder(params)
+    const placeOrderResult = await client.placeActiveOrder(orderParams)
 
     return placeOrderResult.result
 }
