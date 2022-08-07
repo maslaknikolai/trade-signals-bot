@@ -12,13 +12,13 @@ export default function startBot() {
     })
 
     bot.command('check', (ctx) => ctx.reply('🌚'))
-    bot.command('activateLivenet', (ctx) => {
+    bot.command('activate_livenet', (ctx) => {
         memory.isLivenet = true
-        ctx.reply(`${memory.isLivenet}`)
+        ctx.reply(`Livenet: ${memory.isLivenet}`)
     })
-    bot.command('activateTestnet', (ctx) => {
+    bot.command('activate_testnet', (ctx) => {
         memory.isLivenet = false
-        ctx.reply(`${memory.isLivenet}`)
+        ctx.reply(`Livenet: ${memory.isLivenet}`)
     })
 
     bot.on<'photo'>('photo', async (ctx) => {
