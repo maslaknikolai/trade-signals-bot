@@ -8,7 +8,9 @@ function getMark(value: number | string, orderSum: number) {
   }
 
   const procent = Number(value.replace('%', ''))
-  return orderSum + (orderSum * (procent / 100))
+  const result = orderSum + (orderSum * (procent / 100))
+
+  return Number(result.toFixed(4))
 }
 
 export default async function createOrder(orderRequestData: IOrderRequestData) {
@@ -18,13 +20,13 @@ export default async function createOrder(orderRequestData: IOrderRequestData) {
     const client = new LinearClient(API_KEY, PRIVATE_KEY, useLivenet);
 
     const symbol = `${orderRequestData.coin}USDT`
-    const orderBookResult = await client.getTickers({ symbol })
+    const tickersResult = await client.getTickers({ symbol })
     const balanceResult = await client.getWalletBalance({ coin: 'USDT' })
     const fullBalance = balanceResult.result.USDT.wallet_balance
     const wantedOrderSum = fullBalance * 0.1
     const availableBalance = balanceResult.result.USDT.available_balance
     const realOrderSum = availableBalance < wantedOrderSum ? availableBalance : wantedOrderSum;
-    const lastPrice = Number(orderBookResult.result[0].last_price)
+    const lastPrice = Number(tickersResult.result[0].last_price)
     const takeProfit = getMark(orderRequestData.takeProfit || '20%', lastPrice)
     const stopLoss = getMark(orderRequestData.stopLoss, lastPrice)
     const qty = Number((lastPrice / realOrderSum).toFixed(3))
@@ -44,5 +46,5 @@ export default async function createOrder(orderRequestData: IOrderRequestData) {
 
     const placeOrderResult = await client.placeActiveOrder(orderParams)
 
-    return placeOrderResult.result
+    return placeOrderResult
 }
