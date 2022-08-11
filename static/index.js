@@ -1,24 +1,36 @@
 const coin = document.location.search?.match(/coin=(\w*)/)?.[1].toUpperCase()
 let kline = []
+let counter = 0
+let checkbox
 
-async function setup() {
-  kline = await fetch(`/kline/${coin}`).then(r => r.json())
+function setup() {
+  fetch(`/kline.json`)
+    .then(r => r.json())
+    .then(r => {
+      kline = r
+    })
 
-  createCanvas(10 + ((10 + 5) * kline.length), 480);
+  createCanvas(640, 480);
   ml5.tf.setBackend("cpu");
+  checkbox = createCheckbox('Play', false)
 }
 
 function draw() {
   background(0);
 
-  kline.forEach(createBar)
+  const slice = kline.slice(counter, counter + 100)
+  slice.forEach((bar, index) => createBar(bar, index, slice))
+
+  if (checkbox.checked()) {
+    counter++
+  }
 }
 
-function createBar(bar, index) {
+function createBar(bar, index, slice) {
   const graphHeight = height
 
-  const MAX = Math.max(...kline.map(it => it.high))
-  const MIN = Math.min(...kline.map(it => it.low))
+  const MAX = Math.max(...slice.map(it => it.high))
+  const MIN = Math.min(...slice.map(it => it.low))
   const groundedMax = MAX - MIN
 
   const [bodyLowest, bodyHighest] = [bar.open, bar.close].sort().map(it => it - MIN)

@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import keepHerokuAwaiken from '../src/keepHerokuAwaiken';
 import connect from '../src/db'
 import startBot from '../src/botModule/startBot';
 import createOrder from '../src/createOrder';
