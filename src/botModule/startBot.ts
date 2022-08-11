@@ -1,9 +1,8 @@
 import { TELEGRAM_OWNER_CHAT_ID, TELEGRAM_OWNER_LOGIN } from '../config'
 import logToBot from './logToBot'
 import bot from '.'
-import createOrder from '../createOrder';
-import messageToOrderRequestData from '../messageToOrderRequestData';
 import memory from '../memory';
+import onSignal from './onSignal';
 
 export default function startBot() {
     bot.command('start', (ctx) => {
@@ -12,10 +11,12 @@ export default function startBot() {
     })
 
     bot.command('check', (ctx) => ctx.reply('🌚'))
+
     bot.command('activate_livenet', (ctx) => {
         memory.isLivenet = true
         ctx.reply(`Livenet: ${memory.isLivenet}`)
     })
+
     bot.command('activate_testnet', (ctx) => {
         memory.isLivenet = false
         ctx.reply(`Livenet: ${memory.isLivenet}`)
@@ -23,32 +24,14 @@ export default function startBot() {
 
     bot.on<'photo'>('photo', async (ctx) => {
         const caption = ctx.update.message.caption
-
-        const orderRequestData = messageToOrderRequestData(caption)
-
-        if (!orderRequestData) {
-            ctx.reply('💩 Не удалось распарсить')
-            return
-        }
-
-        const res = await createOrder(orderRequestData)
-
-        ctx.reply(JSON.stringify(res, null, 4))
+        const result = await onSignal(caption)
+        ctx.reply(result)
     })
 
     bot.on<'text'>('text', async (ctx) => {
         const text = ctx.update.message.text
-
-        const orderRequestData = messageToOrderRequestData(text)
-
-        if (!orderRequestData) {
-            ctx.reply('💩 Не удалось распарсить')
-            return
-        }
-
-        const res = await createOrder(orderRequestData)
-
-        ctx.reply(JSON.stringify(res, null, 4))
+        const result = await onSignal(text)
+        ctx.reply(result)
     })
 
     bot.launch()

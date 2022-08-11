@@ -23,18 +23,19 @@ export default async function createOrder(orderRequestData: IOrderRequestData) {
     const tickersResult = await client.getTickers({ symbol })
     const balanceResult = await client.getWalletBalance({ coin: 'USDT' })
     const fullBalance = balanceResult.result.USDT.wallet_balance
-    const wantedOrderSum = fullBalance * 0.1
+    const wantedSumForOrder = fullBalance * 0.1
     const availableBalance = balanceResult.result.USDT.available_balance
-    const realOrderSum = availableBalance < wantedOrderSum ? availableBalance : wantedOrderSum;
-    const lastPrice = Number(tickersResult.result[0].last_price)
-    const takeProfit = getMark(orderRequestData.takeProfit || '20%', lastPrice)
-    const stopLoss = getMark(orderRequestData.stopLoss, lastPrice)
-    const qty = Number((lastPrice / realOrderSum).toFixed(3))
+    const sumForOrder = availableBalance < wantedSumForOrder ? availableBalance : wantedSumForOrder;
+    const lastCoinPrice = Number(tickersResult.result[0].last_price)
+    const takeProfit = getMark(orderRequestData.takeProfit || '20%', lastCoinPrice)
+    const stopLoss = getMark(orderRequestData.stopLoss, lastCoinPrice)
+    const qty = Number((sumForOrder / lastCoinPrice).toFixed(3))
+    const side = orderRequestData.isBuy ? 'Buy' : 'Sell'
 
     const orderParams = {
       symbol,
       qty,
-      side: orderRequestData.isBuy ? 'Buy' : 'Sell',
+      side,
       order_type: 'Market',
       time_in_force: 'ImmediateOrCancel',
       reduce_only: false,
