@@ -1,6 +1,5 @@
 import IOrderRequestData from "IOrderRequestData";
-import { LinearClient } from 'bybit-api';
-import memory from "../memory";
+import createBybitClient from "../createBybitClient";
 
 function getMark(value: number | string, orderSum: number) {
   if (typeof value === 'number' || !Number.isNaN(Number(value))) {
@@ -14,10 +13,7 @@ function getMark(value: number | string, orderSum: number) {
 }
 
 export default async function createOrder(orderRequestData: IOrderRequestData) {
-    const useLivenet = memory.isLivenet;
-    const API_KEY = useLivenet ? process.env.BYBIT_API_KEY : process.env.TEST_BYBIT_API_KEY;
-    const PRIVATE_KEY = useLivenet ? process.env.BYBIT_API_SECRET : process.env.TEST_BYBIT_API_SECRET;
-    const client = new LinearClient(API_KEY, PRIVATE_KEY, useLivenet);
+    const client = createBybitClient()
 
     const symbol = `${orderRequestData.coin}USDT`
     const tickersResult = await client.getTickers({ symbol })
