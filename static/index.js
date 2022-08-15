@@ -74,7 +74,7 @@ function draw() {
     alwaysSellingTrader.update()
 
     traders.forEach((trader, i) => {
-      trader.update()
+      trader.update(true)
 
       if (isExtrasensTraining) {
         if (trader.state.lastTrade !== extrasensTrader.state.lastTrade) {
@@ -119,19 +119,25 @@ function draw() {
   fill(255);
   textSize(16);
   text(`Generation: ${generationCounters.length + 1}`, 20, 20)
-  text(`Generation counters: ${generationCounters.join(', ')}`, 20, 40)
-  text(`Counter: ${counter} / ${bars.length}`, 20, 60)
+  text(`Counter: ${counter} / ${bars.length}`, 20, 40)
+  text(`Generation counters: ${generationCounters.join(', ')}`, 20, 60)
+
+  const maxCounter = generationCounters.length ? Math.max(...generationCounters) : 0
+  const numberOfGenerationWithMaxCounter = generationCounters.length
+    ? generationCounters.indexOf(maxCounter) + 1
+    : '-'
+  text(`Best generation: ${numberOfGenerationWithMaxCounter}. Record: ${maxCounter}`, 20, 80)
 
   textSize(10);
-  text(`Extrasens: $${extrasensTrader.state.balance}`, 20, 90)
-  text(`Random trader: $${randomTrader.state.balance}`, 20, 100)
-  text(`Always buying trader: $${alwaysBuyingTrader.state.balance}`, 20, 110)
-  text(`Always selling trader: $${alwaysSellingTrader.state.balance}`, 20, 120)
+  text(`Extrasens: $${extrasensTrader.state.balance}`, 20, 100)
+  text(`Random trader: $${randomTrader.state.balance}`, 20, 110)
+  text(`Always buying trader: $${alwaysBuyingTrader.state.balance}`, 20, 120)
+  text(`Always selling trader: $${alwaysSellingTrader.state.balance}`, 20, 130)
 
   traders.forEach((trader, i) => {
     fill(255);
     textSize(10);
-    text(`$${trader.state.balance}`, 20, 130 + i * 10)
+    text(`$${trader.state.balance}`, 20, 140 + i * 10)
   })
 }
 
@@ -235,6 +241,7 @@ function createTrader(brain) {
     balance: START_BALANCE,
     maxBalance: START_BALANCE,
     liveBarsCount: 0,
+    correctMovesCount: 0,
     lastTrade: '',
     fitness: 0,
     brain: (() => {
@@ -282,11 +289,18 @@ function createTrader(brain) {
     }
   }
 
-  function update() {
+  function update(isRealTrader) {
     state.liveBarsCount += 1;
 
     if (!state.lastTrade) {
       return
+    }
+
+
+    if (isRealTrader) {
+      if (state.lastTrade === extrasensTrader.lastTrade) {
+        state.correctMovesCount += 1;
+      }
     }
 
     const previousBar = bars[counter - 1]
@@ -380,9 +394,9 @@ function pickOne() {
 }
 
 function calculateFitness() {
-  const sum = savedTraders.reduce((acc, it) => acc + it.state.liveBarsCount, 0)
+  const sum = savedTraders.reduce((acc, it) => acc + it.state.correctMovesCount, 0)
 
   for (const trader of savedTraders) {
-    trader.state.fitness = trader.state.liveBarsCount / sum;
+    trader.state.fitness = trader.state.correctMovesCount / sum;
   }
 }
